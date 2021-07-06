@@ -4,6 +4,7 @@ using UnityEngine;
 public class Bird : MonoBehaviour
 {
     public static event Action OnDeath;
+    public static event Action OnScore;
 
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private float _force;
@@ -27,6 +28,11 @@ public class Bird : MonoBehaviour
         OnDeath?.Invoke();
 
         Time.timeScale = 0f;
+    }
+
+    private void OnTriggerEnter2D()
+    {
+        OnScore?.Invoke();
     }
 
     private void Flap()
