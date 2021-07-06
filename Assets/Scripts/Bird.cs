@@ -3,9 +3,16 @@ using UnityEngine;
 
 public class Bird : MonoBehaviour
 {
+    public static event Action OnDeath;
+
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private float _force;
     [SerializeField] private float _yBound;
+
+    private void Start()
+    {
+        Time.timeScale = 1f;
+    }
 
     private void Update()
     {
@@ -13,6 +20,13 @@ public class Bird : MonoBehaviour
         {
             Flap();
         }
+    }
+
+    private void OnCollisionEnter2D()
+    {
+        OnDeath?.Invoke();
+
+        Time.timeScale = 0f;
     }
 
     private void Flap()
