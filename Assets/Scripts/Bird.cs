@@ -10,6 +10,11 @@ public class Bird : MonoBehaviour
     [SerializeField] private float _force;
     [SerializeField] private float _yBound;
 
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _flapSound;
+    [SerializeField] private AudioClip _hitSound;
+    [SerializeField] private AudioClip _scoreSound;
+
     private void Start()
     {
         Time.timeScale = 1f;
@@ -27,17 +32,23 @@ public class Bird : MonoBehaviour
     {
         OnDeath?.Invoke();
 
+        _audioSource.PlayOneShot(_hitSound);
+
         Time.timeScale = 0f;
     }
 
     private void OnTriggerEnter2D()
     {
         OnScore?.Invoke();
+
+        _audioSource.PlayOneShot(_scoreSound);
     }
 
     private void Flap()
     {
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.AddForce(Vector2.up * _force);
+
+        _audioSource.PlayOneShot(_flapSound);
     }
 }
